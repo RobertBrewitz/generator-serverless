@@ -1,7 +1,7 @@
 {
   "name": "@rpoc/generator-serverless",
   "author": "Robert Brewitz Borg <hello@robertbrewitz.com>",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Yeoman generators for the serverless framework for creating rapid proof-of-concepts",
   "license": "MIT",
   "homepage": "https://github.com/rpoc/generator-serverless#readme",

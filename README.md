@@ -6,10 +6,15 @@
 
 A collection of Serverless generators for developing Rapid Proof-of-Concepts.
 
+## Node version
+
+Using the latest major LTS node version, currently Node 8.
+
 ## Installation
 
 ```bash
-npm install -g yo @rpoc/generator-serverless
+nvm use 8
+npm install -g serverless yo @rpoc/generator-serverless
 ```
 
 ## Generators
@@ -18,9 +23,10 @@ npm install -g yo @rpoc/generator-serverless
 
 Sets up a unit-tested RESTful API serverless application for AWS API Gateway, using Lambda and DynamoDB.
 
-- Axios
 - AWS-SDK
+- Axios
 - Chai
+- Editorconfig
 - Eslint
 - Mocha
 - Nyc
