@@ -6,7 +6,6 @@ module.exports = (deps) => {
     responseDefault,
     responseError,
     responseSuccess,
-    responseOptions,
   } = deps;
 
   return (evt, ctx, cb) => {
@@ -21,10 +20,6 @@ module.exports = (deps) => {
     }
 
     switch (evt.httpMethod) {
-      case 'OPTIONS':
-        cb(null, responseOptions());
-      break;
-
       case 'GET':
         return getDefaultTask(queryStringParameters)
           .then(responseSuccess)

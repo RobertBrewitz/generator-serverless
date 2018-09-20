@@ -90,7 +90,6 @@ module.exports = class extends Generator {
         line += `    get${Singular}Task,${EOL}`;
         line += `    responseDefault,${EOL}`;
         line += `    responseError,${EOL}`;
-        line += `    responseOptions,${EOL}`;
         line += `    responseSuccess,${EOL}`;
         line += `    upsert${Singular}Task,${EOL}`;
         line += '  }),';
@@ -158,7 +157,15 @@ module.exports = class extends Generator {
           http: {
             path: plural,
             method: 'any',
-            cors: true,
+            cors: {
+              allowCredentials: false,
+              origin: '*',
+              headers: [
+                'Content-Type',
+                'Access-Control-Allow-Origin',
+                'Authorization',
+              ],
+            },
           },
         },
       ],

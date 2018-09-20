@@ -50,4 +50,10 @@ functions:
       - http:
           path: defaults
           method: any
-          cors: true
+          cors:
+            allowCredentials: false
+            origin: '*'
+            headers:
+              - Content-Type
+              - Access-Control-Allow-Origin
+              - Authorization

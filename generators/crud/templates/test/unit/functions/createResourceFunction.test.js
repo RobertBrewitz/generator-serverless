@@ -17,22 +17,6 @@ describe('test/unit/functions/create<%= Singular %>Function.test.js', () => {
     expect(cb.calledWith(null, 'default'), 'cb').to.be.true;
   });
 
-  it('OPTIONS', () => {
-    const responseOptions = sinon.stub().returns('options');
-
-    const func = create<%= Singular %>Function({
-      responseOptions,
-    });
-
-    const evt = { httpMethod: 'OPTIONS' };
-    const ctx = {};
-    const cb = sinon.spy();
-
-    func(evt, ctx, cb);
-
-    expect(cb.calledWith(null, 'options'), 'cb').to.be.true;
-  });
-
   describe('GET', () => {
     it('recieves query parameters', async () => {
       const get<%= Singular %>Task = sinon.stub().resolves();

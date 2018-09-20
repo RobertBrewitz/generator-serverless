@@ -1,6 +1,5 @@
 const {
   responseDefault,
-  responseOptions,
   responseSuccess,
   responseError,
 } = require('./../../../src/helpers/responseHelpers');
@@ -27,40 +26,6 @@ describe('test/unit/helpers/responseHelpers.test.js', () => {
       const res = responseDefault();
 
       expect(res.headers[header]).to.eq(true);
-    });
-  });
-
-  describe('responseOptions', () => {
-    it('headers include Access Control Allow Origin with value *', () => {
-      const header = 'Access-Control-Allow-Origin';
-
-      const res = responseOptions();
-
-      expect(res.headers[header]).to.eq('*');
-    });
-
-    it('headers include Access Control Allow Credentials with value true', () => {
-      const header = 'Access-Control-Allow-Credentials';
-
-      const res = responseOptions();
-
-      expect(res.headers[header]).to.eq(true);
-    });
-
-    it('headers include Access Control Allow Methods with value GET,PUT,POST,DELETE,PATCH', () => {
-      const header = 'Access-Control-Allow-Methods';
-
-      const res = responseOptions();
-
-      expect(res.headers[header]).to.eq('GET,PUT,POST,DELETE,PATCH');
-    });
-
-    it('headers include Access Control Allow Headers with value Content-Type, *', () => {
-      const header = 'Access-Control-Allow-Headers';
-
-      const res = responseOptions();
-
-      expect(res.headers[header]).to.eq('Content-Type, *');
     });
   });
 

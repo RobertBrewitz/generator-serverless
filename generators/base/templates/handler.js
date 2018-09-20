@@ -1,7 +1,6 @@
 const {
   responseDefault,
   responseError,
-  responseOptions,
   responseSuccess,
 } = require('./src/helpers/responseHelpers');
 
@@ -19,7 +18,6 @@ module.exports = {
     getDefaultTask,
     responseDefault,
     responseError,
-    responseOptions,
     responseSuccess,
     upsertDefaultTask,
   }),
