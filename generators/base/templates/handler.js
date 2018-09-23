@@ -1,19 +1,16 @@
+const createDefaultsFunction = require('./src/functions/createDefaultsFunction');
+const deleteDefaultTask = require('./src/tasks/deleteDefaultTask');
+const getDefaultTask = require('./src/tasks/getDefaultTask');
+const upsertDefaultTask = require('./src/tasks/upsertDefaultTask');
+
 const {
   responseDefault,
   responseError,
   responseSuccess,
 } = require('./src/helpers/responseHelpers');
 
-// Functions - Keep comment for generator
-const createDefaultFunction = require('./src/functions/createDefaultFunction');
-
-// Tasks - Keep comment for generator
-const deleteDefaultTask = require('./src/tasks/deleteDefaultTask');
-const getDefaultTask = require('./src/tasks/getDefaultTask');
-const upsertDefaultTask = require('./src/tasks/upsertDefaultTask');
-
 module.exports = {
-  defaultFunction: createDefaultFunction({
+  defaultsFunction: createDefaultsFunction({
     deleteDefaultTask,
     getDefaultTask,
     responseDefault,

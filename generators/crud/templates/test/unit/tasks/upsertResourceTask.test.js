@@ -1,5 +1,9 @@
-const stage = process.env.STAGE;
 const uuidV4Fallback = require('uuid/v4');
+
+const {
+  STAGE,
+  APP,
+} = process.env;
 
 const createTask = ({ update, uuidV4 = uuidV4Fallback }) => {
   // Proxyquire assigned to global in _setup.test.js so working directory is `test/`
@@ -29,7 +33,7 @@ describe('test/unit/tasks/upsert<%= Singular %>Task.test.js', () => {
     expect(update.lastCall.args[0].Key.uuid).to.eq('1');
   });
 
-  it(`should make an update to ${stage}-<%= plural %> table`, async () => {
+  it(`should make an update to ${APP}-${STAGE}-<%= plural %> table`, async () => {
     const update = sinon.stub().yields(null, {});
     const upsert<%= Singular %>Task = createTask({ update });
 
@@ -40,7 +44,7 @@ describe('test/unit/tasks/upsert<%= Singular %>Task.test.js', () => {
 
     await upsert<%= Singular %>Task(event);
 
-    expect(update.lastCall.args[0].TableName).to.eq(`${stage}-<%= plural %>`);
+    expect(update.lastCall.args[0].TableName).to.eq(`${APP}-${STAGE}-<%= plural %>`);
   });
 
   it('uses uuid as primary key for update', async () => {

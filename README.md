@@ -13,7 +13,7 @@ Using the latest major LTS node version, currently Node 8.
 ## Installation
 
 ```bash
-nvm use 8
+nvm install 8.10
 npm install -g serverless yo @rpoc/generator-serverless
 ```
 
@@ -21,7 +21,7 @@ npm install -g serverless yo @rpoc/generator-serverless
 
 ### Base
 
-Sets up a unit-tested RESTful API serverless application for AWS API Gateway, using Lambda and DynamoDB.
+Sets up a unit-tested RESTful API serverless application for AWS API Gateway, Lambda, DynamoDB, and Cognito authorizer for Lambda functions.
 
 - AWS-SDK
 - Axios
@@ -35,6 +35,7 @@ Sets up a unit-tested RESTful API serverless application for AWS API Gateway, us
 - UUID
 
 ```bash
+nvm use 8.10
 serverless create --template aws-nodejs --path myapi
 cd myapi
 npm init
@@ -42,17 +43,7 @@ yo @rpoc/serverless:base
 sls deploy
 ```
 
-You can now invoke your RESTful API, your endpoint (<endpoint URL>) is outputted when deploy is done.
-
-```bash
-  curl -X OPTIONS <endpoint URL>
-  curl -X POST <endpoint URL> --data '"{ "uuid": "1", "Label": "Default 1" }'
-  curl -X PUT <endpoint URL> --data '"{ "uuid": "1", "Label": "Default One" }'
-  curl -X PATCH <endpoint URL> --data '"{ "uuid": "1", "Label": "Default #1" }'
-  curl -X GET <endpoint URL>
-  curl -X GET <endpoint URL>?uuid=1
-  curl -X DELETE <endpoint URL>?uuid=1
-```
+To interact with the API, see either [AWS Amplify Authentication Guide](https://aws-amplify.github.io/amplify-js/media/authentication_guide) and [AWS Amplify API Guide](https://aws-amplify.github.io/amplify-js/media/api_guide), or try out our [rpoc/generator-react](https://github.com/rpoc/generator-react) that'll set up everything for you.
 
 ### CRUD
 
@@ -61,6 +52,7 @@ Add a Resource with create, read, update, and delete REST API.
 Requires `@rpoc/serverless:base` generator to have been run
 
 ```
+nvm use
 yo @rpoc/serverless:crud
 ```
 

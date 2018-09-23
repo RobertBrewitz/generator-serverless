@@ -1,7 +1,11 @@
 const AWS = require('aws-sdk');
 const uuidV4 = require('uuid/v4');
 const docClient = new AWS.DynamoDB.DocumentClient({ region: 'eu-central-1' });
-const stage = process.env.STAGE;
+
+const {
+  STAGE,
+  APP,
+} = process.env;
 
 module.exports = (atts) => {
   return new Promise((resolve, reject) => {
@@ -15,7 +19,7 @@ module.exports = (atts) => {
     } = atts;
 
     const params = {
-      TableName: `${stage}-<%= plural %>`,
+      TableName: `${APP}-${STAGE}-<%= plural %>`,
       Key: {
         uuid
       },

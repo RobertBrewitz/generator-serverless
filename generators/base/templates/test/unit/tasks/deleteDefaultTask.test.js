@@ -1,4 +1,7 @@
-const stage = process.env.STAGE;
+const {
+  STAGE,
+  APP,
+} = process.env;
 
 const createTask = ({ del }) => {
   // Proxyquire assigned to global in _setup.test.js so working directory is `test/`
@@ -13,7 +16,7 @@ const createTask = ({ del }) => {
   });
 };
 
-describe('test/unit/tasks/deleteDefaultsTask.test.js', () => {
+describe('test/unit/tasks/deleteDefaultTask.test.js', () => {
   it('strict on uuid to being supplied and does not call delete', async () => {
     const del = sinon.stub().yields(null, {});
     const deleteDefaultTask = createTask({ del });
@@ -28,7 +31,7 @@ describe('test/unit/tasks/deleteDefaultsTask.test.js', () => {
     expect(del.called).to.be.false;
   });
 
-  it(`calls delete with the uuid to the ${stage}-defaults table`, async () => {
+  it(`calls delete with the uuid to the ${APP}-${STAGE}-defaults table`, async () => {
     const del = sinon.stub().yields(null, {});
     const deleteDefaultTask = createTask({ del });
 
@@ -39,7 +42,7 @@ describe('test/unit/tasks/deleteDefaultsTask.test.js', () => {
     await deleteDefaultTask(event);
 
     expect(del.firstCall.args[0].Key.uuid).to.eq(event.uuid);
-    expect(del.firstCall.args[0].TableName).to.eq(`${stage}-defaults`);
+    expect(del.firstCall.args[0].TableName).to.eq(`${APP}-${STAGE}-defaults`);
   });
 });
 

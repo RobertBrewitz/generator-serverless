@@ -1,0 +1,14 @@
+Resources:
+  <%= Plural %>Table:
+    Type: 'AWS::DynamoDB::Table'
+    Properties:
+      TableName: ${self:service}-${self:provider.stage}-<%= plural %>
+      AttributeDefinitions:
+        - AttributeName: uuid
+          AttributeType: S
+      KeySchema:
+        - AttributeName: uuid
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1

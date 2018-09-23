@@ -1,4 +1,7 @@
-const stage = process.env.STAGE;
+const {
+  STAGE,
+  APP,
+} = process.env;
 
 const createTask = ({ get, scan }) => {
   // Proxyquire assigned to global in _setup.test.js so working directory is `test/`
@@ -15,7 +18,7 @@ const createTask = ({ get, scan }) => {
 };
 
 describe('test/unit/tasks/getDefaultTask.test.js', () => {
-  it(`if uuid is supplied it gets item with that uuid from ${stage}-defaults table and does not scan`, async () => {
+  it(`if uuid is supplied it gets item with that uuid from ${APP}-${STAGE}-defaults table and does not scan`, async () => {
     const scan = sinon.stub().yields(null, {});
     const get = sinon.stub().yields(null, {});
 
@@ -29,11 +32,11 @@ describe('test/unit/tasks/getDefaultTask.test.js', () => {
 
     expect(scan.called).to.be.false;
     expect(get.called).to.be.true;
-    expect(get.firstCall.args[0].TableName).to.eq(`${stage}-defaults`);
+    expect(get.firstCall.args[0].TableName).to.eq(`${APP}-${STAGE}-defaults`);
     expect(get.firstCall.args[0].Key.uuid).to.eq(event.uuid);
   });
 
-  it(`if no uuid is supplied it scans ${stage}-defaults table and does not get`, async () => {
+  it(`if no uuid is supplied it scans ${APP}-${STAGE}-defaults table and does not get`, async () => {
     const scan = sinon.stub().yields(null, {});
     const get = sinon.stub().yields(null, {});
 
@@ -44,7 +47,7 @@ describe('test/unit/tasks/getDefaultTask.test.js', () => {
     await getDefaultTask(event);
 
     expect(scan.called).to.be.true;
-    expect(scan.firstCall.args[0].TableName).to.eq(`${stage}-defaults`);
+    expect(scan.firstCall.args[0].TableName).to.eq(`${APP}-${STAGE}-defaults`);
     expect(get.called).to.be.false;
   });
 });

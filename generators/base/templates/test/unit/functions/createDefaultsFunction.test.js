@@ -1,4 +1,4 @@
-const createDefaultFunction = require('./../../../src/functions/createDefaultFunction');
+const createDefaultFunction = require('./../../../src/functions/createDefaultsFunction');
 
 describe('test/unit/functions/createDefaultFunction.test.js', () => {
   it('default behavior', () => {

@@ -1,6 +1,10 @@
 const AWS = require('aws-sdk');
 const docClient = new AWS.DynamoDB.DocumentClient({ region: 'eu-central-1' });
-const stage = process.env.STAGE;
+
+const {
+  STAGE,
+  APP,
+} = process.env;
 
 module.exports = (atts) => {
   return new Promise((resolve, reject) => {
@@ -23,7 +27,7 @@ module.exports = (atts) => {
       Key: {
         uuid,
       },
-      TableName: `${stage}-defaults`,
+      TableName: `${APP}-${STAGE}-defaults`,
     };
 
     docClient.delete(params, (err, data) => {

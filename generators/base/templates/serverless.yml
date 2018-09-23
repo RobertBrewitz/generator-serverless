@@ -1,4 +1,4 @@
-service: <%= name %>
+service: <%= serviceName %>
 provider:
   name: aws
   runtime: nodejs8.10
@@ -8,52 +8,12 @@ provider:
   timeout: 30
   environment:
     STAGE: '${self:provider.stage}'
+    APP: '${self:service}'
 resources:
-  Resources:
-    DynamoDBIamPolicy:
-      Type: 'AWS::IAM::Policy'
-      DependsOn:
-        - DefaultsTable
-      Properties:
-        PolicyName: lambda-dynamodb
-        PolicyDocument:
-          Version: '2012-10-17'
-          Statement:
-            - Effect: Allow
-              Action:
-                - 'dynamodb:Scan'
-                - 'dynamodb:GetItem'
-                - 'dynamodb:UpdateItem'
-                - 'dynamodb:DeleteItem'
-              Resource: 'arn:aws:dynamodb:*:*:table/${self:provider.stage}-defaults'
-        Roles:
-          - Ref: IamRoleLambdaExecution
-    DefaultsTable:
-      Type: 'AWS::DynamoDB::Table'
-      Properties:
-        TableName: '${self:provider.stage}-defaults'
-        AttributeDefinitions:
-          - AttributeName: uuid
-            AttributeType: S
-        KeySchema:
-          - AttributeName: uuid
-            KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
+  - '${file(config/resources/cognito-user-pool.yml)}'
+  - '${file(config/resources/cognito-user-pools-authorizer.yml)}'
+  - '${file(config/resources/cognito-identity-pool.yml)}'
+  - '${file(config/resources/dynamodb-iam-policy.yml)}'
+  - '${file(config/resources/defaults-table.yml)}'
 functions:
-  defaultFunction:
-    name: '${self:provider.stage}-defaultFunction'
-    handler: handler.defaultFunction
-    memorySize: 128
-    events:
-      - http:
-          path: defaults
-          method: any
-          cors:
-            allowCredentials: false
-            origin: '*'
-            headers:
-              - Content-Type
-              - Access-Control-Allow-Origin
-              - Authorization
+  - '${file(config/functions/defaults-function.yml)}'

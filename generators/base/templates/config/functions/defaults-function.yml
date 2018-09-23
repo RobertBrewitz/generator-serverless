@@ -1,0 +1,28 @@
+# Expect CORS errors sometimes
+#
+# - Access-Control-Allow-Origin is not returned by API Gateway by default.
+# - API Gateway catches lambda errors and does not return headers from your lambda functions error response.
+#
+# Not possible at this time to configure API Gateway Responses from serverless.yml
+
+defaultsFunction:
+  name: ${self:service}-${self:provider.stage}-defaultsFunction
+  handler: handler.defaultsFunction
+  memorySize: 128
+  events:
+    - http:
+        path: defaults
+        method: any
+        authorizer:
+          type: COGNITO_USER_POOLS
+          authorizerId:
+            Ref: ApiGatewayAuthorizer
+        cors:
+          origin: '*'
+          allowCredentials: false # required for Authorization to be set to Cognito User Pool
+          headers:
+            - Access-Control-Allow-Origin
+            - Authorization
+            - Content-Type
+            - X-Amz-Date
+            - X-Amz-Security-Token
