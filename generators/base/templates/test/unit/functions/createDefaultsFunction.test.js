@@ -151,7 +151,7 @@ describe('test/unit/functions/createDefaultFunction.test.js', () => {
 
       const expected = { uuid: '1' };
 
-      const evt = { body: JSON.stringify(expected), httpMethod: 'PUT' };
+      const evt = { body: JSON.stringify(expected), httpMethod: 'POST' };
       const ctx = {};
       const cb = sinon.spy();
 
