@@ -2,10 +2,10 @@ const create<%= Singular %>Function = require('./../../../src/functions/create<%
 
 describe('test/unit/functions/create<%= Singular %>Function.test.js', () => {
   it('default behavior', () => {
-    const responseDefault = sinon.stub().returns('default');
+    const responseBad = sinon.stub().returns('default');
 
     const func = create<%= Singular %>Function({
-      responseDefault,
+      responseBad,
     });
 
     const evt = {};

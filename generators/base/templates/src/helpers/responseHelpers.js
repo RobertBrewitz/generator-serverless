@@ -1,5 +1,5 @@
 module.exports = {
-  responseDefault: () => {
+  responseBad: () => {
     return {
       statusCode: 405,
       headers: {
@@ -8,14 +8,26 @@ module.exports = {
       }
     };
   },
-  responseSuccess: (data) => {
+  responseSuccess: (res = {}) => {
+    let body = res.data || res.body;
+
+    try {
+      if (body) {
+        body = JSON.stringify(body);
+      } else {
+        body = JSON.stringify(res);
+      }
+    } catch (e) {
+      // Do nothing
+    }
+
     return {
       statusCode: 200,
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Credentials': true
       },
-      body: JSON.stringify(data)
+      body,
     };
   },
   responseError: (err) => {

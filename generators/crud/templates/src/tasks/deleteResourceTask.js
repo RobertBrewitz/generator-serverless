@@ -6,7 +6,7 @@ const {
   APP,
 } = process.env;
 
-module.exports = (atts) => {
+module.exports = (atts = {}) => {
   return new Promise((resolve, reject) => {
     if (!atts.uuid) {
       return reject({

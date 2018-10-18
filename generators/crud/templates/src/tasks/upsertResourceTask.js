@@ -7,14 +7,14 @@ const {
   APP,
 } = process.env;
 
-module.exports = (atts) => {
+module.exports = (atts = {}) => {
   return new Promise((resolve, reject) => {
     if (!atts.uuid) {
       atts.uuid = uuidV4();
     }
 
     const {
-      Label,
+      Name,
       uuid,
     } = atts;
 
@@ -24,8 +24,8 @@ module.exports = (atts) => {
         uuid
       },
       AttributeUpdates: {
-        Label: {
-          Value: Label,
+        Name: {
+          Value: Name,
           Action: 'PUT'
         },
       },

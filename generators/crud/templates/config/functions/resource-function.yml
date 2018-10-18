@@ -5,9 +5,9 @@
 #
 # Not possible at this time to configure API Gateway Responses from serverless.yml
 
-<%= plural %>Function:
-  name: ${self:service}-${self:provider.stage}-<%= plural %>Function
-  handler: handler.<%= plural %>Function
+<%= singular %>Function:
+  name: ${self:service}-${self:provider.stage}-<%= singular %>Function
+  handler: handler.<%= singular %>Function
   memorySize: 128
   events:
     - http:

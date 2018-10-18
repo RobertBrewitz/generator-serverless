@@ -3,33 +3,35 @@ const { execSync } = require('child_process');
 const { EOL } = require('os');
 const yaml = require('js-yaml');
 
-const capitalise = (word) => {
-  return word[0].toUpperCase() + word.slice(1);
-};
+const {
+  upcaseFirstLetter,
+  downcaseFirstLetter,
+  kebabCase,
+} = require('./../helpers/inputHelpers');
 
 module.exports = class extends Generator {
   prompting() {
     const done = this.async();
 
-    const plural = {
-      type: 'input',
-      name: 'plural',
-      message: 'Plural resource name?',
-    };
-
     const singular = {
       type: 'input',
       name: 'singular',
-      message: 'Singular resource name?',
+      message: 'Singular resource name? (CamelCase)',
+    };
+
+    const plural = {
+      type: 'input',
+      name: 'plural',
+      message: 'Plural resource name? (CamelCase)',
     };
 
     return this.prompt([
-      plural,
       singular,
+      plural,
     ]).then((answers) => {
       this.answers = {
-        plural: answers.plural.toLowerCase(),
-        singular: answers.singular.toLowerCase(),
+        singular: downcaseFirstLetter(answers.singular),
+        plural: downcaseFirstLetter(answers.plural),
       };
 
       done();
@@ -42,11 +44,14 @@ module.exports = class extends Generator {
       singular,
     } = this.answers;
 
-    const Plural = capitalise(plural);
-    const Singular = capitalise(singular);
+    const pluralFilename = kebabCase(plural);
+    const singularFilename = kebabCase(singular);
+
+    const Plural = upcaseFirstLetter(plural);
+    const Singular = upcaseFirstLetter(singular);
 
     const fileTemplates = [
-      'config/functions/resources-function.yml',
+      'config/functions/resource-function.yml',
       'config/resources/resources-table.yml',
       'src/functions/createResourceFunction.js',
       'src/tasks/deleteResourceTask.js',
@@ -61,7 +66,12 @@ module.exports = class extends Generator {
     fileTemplates.forEach((filename) => {
       this.fs.copyTpl(
         this.templatePath(filename),
-        this.destinationPath(filename.replace(/Resource/, Singular).replace(/resources-/,`${plural}-`)),
+        this.destinationPath(
+          filename
+            .replace(/Resource/, Singular)
+            .replace(/resource-function/, `${singularFilename}-function`)
+            .replace(/resources-table/, `${pluralFilename}-table`)
+        ),
         {
           Plural,
           Singular,
@@ -75,11 +85,15 @@ module.exports = class extends Generator {
     const handler = this.fs.read(this.destinationPath('handler.js'));
 
     const newHandler = handler.toString().split(EOL).map((line, index) => {
-      if (index === 3) {
-        line += `${EOL}const create${Singular}Function = require('./src/functions/create${Singular}Function');`;
-        line += `${EOL}const delete${Singular}Task = require('./src/tasks/delete${Singular}Task');`;
-        line += `${EOL}const get${Singular}Task = require('./src/tasks/get${Singular}Task');`;
-        line += `${EOL}const upsert${Singular}Task = require('./src/tasks/upsert${Singular}Task');`;
+      const originalLine = line;
+
+      if (index === 0) {
+        line = '';
+        line += `const create${Singular}Function = require('./src/functions/create${Singular}Function');${EOL}`;
+        line += `const delete${Singular}Task = require('./src/tasks/delete${Singular}Task');${EOL}`;
+        line += `const get${Singular}Task = require('./src/tasks/get${Singular}Task');${EOL}`;
+        line += `const upsert${Singular}Task = require('./src/tasks/upsert${Singular}Task');${EOL}`;
+        line += originalLine;
       }
 
       if (line.match(/module.exports = {/)) {
@@ -101,13 +115,16 @@ module.exports = class extends Generator {
 
     // Update serverless.yml
     const serverlessYaml = yaml.safeLoad(this.fs.read(this.destinationPath('serverless.yml')));
-    serverlessYaml.functions.push(`\${file(config/functions/${plural}-function.yml)}`);
-    serverlessYaml.resources.push(`\${file(config/resources/${plural}-table.yml)}`);
+    serverlessYaml.functions = serverlessYaml.functions || [];
+    serverlessYaml.functions.push(`\${file(config/functions/${singularFilename}-function.yml)}`);
+    serverlessYaml.resources.push(`\${file(config/resources/${pluralFilename}-table.yml)}`);
     this.fs.write(this.destinationPath('serverless.yml'), yaml.safeDump(serverlessYaml));
 
     // DynamoDB IAM Policy
     const dynamoDBIamYaml = yaml.safeLoad(this.fs.read(this.destinationPath('config/resources/dynamodb-iam-policy.yml')));
+    dynamoDBIamYaml.Resources.DynamoDBIamPolicy.DependsOn = dynamoDBIamYaml.Resources.DynamoDBIamPolicy.DependsOn || [];
     dynamoDBIamYaml.Resources.DynamoDBIamPolicy.DependsOn.push(`${Plural}Table`);
+    dynamoDBIamYaml.Resources.DynamoDBIamPolicy.Properties.PolicyDocument.Statement = dynamoDBIamYaml.Resources.DynamoDBIamPolicy.Properties.PolicyDocument.Statement || [];
     dynamoDBIamYaml.Resources.DynamoDBIamPolicy.Properties.PolicyDocument.Statement.push({
       Effect: 'Allow',
       Action: [

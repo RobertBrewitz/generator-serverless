@@ -25,7 +25,7 @@ describe('test/unit/tasks/upsert<%= Singular %>Task.test.js', () => {
     const upsert<%= Singular %>Task = createTask({ update, uuidV4: () => '1' });
 
     const event = {
-      Label: 'Label',
+      Name: 'Name',
     };
 
     await upsert<%= Singular %>Task(event);
@@ -38,7 +38,7 @@ describe('test/unit/tasks/upsert<%= Singular %>Task.test.js', () => {
     const upsert<%= Singular %>Task = createTask({ update });
 
     const event = {
-      Label: 'Label',
+      Name: 'Name',
       uuid: 'uuid',
     };
 
@@ -52,7 +52,7 @@ describe('test/unit/tasks/upsert<%= Singular %>Task.test.js', () => {
     const upsert<%= Singular %>Task = createTask({ update });
 
     const event = {
-      Label: 'Label',
+      Name: 'Name',
       uuid: 'uuid',
     };
 
@@ -61,18 +61,18 @@ describe('test/unit/tasks/upsert<%= Singular %>Task.test.js', () => {
     expect(update.lastCall.args[0].Key.uuid).to.eq(event.uuid);
   });
 
-  it('uses Label as value for updating Label', async () => {
+  it('uses Name as value for updating Name', async () => {
     const update = sinon.stub().yields(null, {});
     const upsert<%= Singular %>Task = createTask({ update });
 
     const event = {
-      Label: 'Label',
+      Name: 'Name',
       uuid: 'uuid',
     };
 
     await upsert<%= Singular %>Task(event);
 
-    expect(update.lastCall.args[0].AttributeUpdates.Label.Value).to.eq(event.Label);
+    expect(update.lastCall.args[0].AttributeUpdates.Name.Value).to.eq(event.Name);
   });
 });
 

@@ -40,10 +40,7 @@ serverless create --template aws-nodejs --path myapi
 cd myapi
 npm init
 yo @rpoc/serverless:base
-sls deploy
 ```
-
-To interact with the API, see either [AWS Amplify Authentication Guide](https://aws-amplify.github.io/amplify-js/media/authentication_guide) and [AWS Amplify API Guide](https://aws-amplify.github.io/amplify-js/media/api_guide), or try out our [rpoc/generator-react](https://github.com/rpoc/generator-react) that'll set up everything for you.
 
 ### CRUD
 
@@ -55,6 +52,10 @@ Requires `@rpoc/serverless:base` generator to have been run
 nvm use
 yo @rpoc/serverless:crud
 ```
+
+## Interaction
+
+To interact with the API, see either [AWS Amplify Authentication Guide](https://aws-amplify.github.io/amplify-js/media/authentication_guide) and [AWS Amplify API Guide](https://aws-amplify.github.io/amplify-js/media/api_guide), or try out our [rpoc/generator-react](https://github.com/rpoc/generator-react) that'll set up everything for you.
 
 ## LICENSE
 

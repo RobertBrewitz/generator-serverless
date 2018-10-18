@@ -1,15 +1,15 @@
-module.exports = (deps) => {
+module.exports = (deps = {}) => {
   const {
     get<%= Singular %>Task,
     upsert<%= Singular %>Task,
     delete<%= Singular %>Task,
-    responseDefault,
+    responseBad,
     responseError,
     responseSuccess,
   } = deps;
 
   return (evt, ctx, cb) => {
-    const queryStringParameters = evt.queryStringParameters || {};
+    const queryStringParameters = evt.queryStringParameters || {};
 
     let body;
 
@@ -25,39 +25,33 @@ module.exports = (deps) => {
           .then(responseSuccess)
           .catch(responseError)
           .then(res => cb(null, res));
-      break;
 
       case 'PUT':
         return upsert<%= Singular %>Task(body)
           .then(responseSuccess)
           .catch(responseError)
           .then(res => cb(null, res));
-      break;
 
       case 'POST':
         return upsert<%= Singular %>Task(body)
           .then(responseSuccess)
           .catch(responseError)
           .then(res => cb(null, res));
-      break;
 
       case 'DELETE':
         return delete<%= Singular %>Task(queryStringParameters)
           .then(responseSuccess)
           .catch(responseError)
           .then(res => cb(null, res));
-      break;
 
       case 'PATCH':
         return upsert<%= Singular %>Task(body)
           .then(responseSuccess)
           .catch(responseError)
           .then(res => cb(null, res));
-      break;
 
       default:
-        cb(null, responseDefault());
-      break;
+        cb(null, responseBad());
     }
   };
 };

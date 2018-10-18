@@ -7,10 +7,10 @@ const {
 } = process.env;
 
 const ITEM_STRUCT = {
-  Label: '',
+  Name: '',
 };
 
-module.exports = (atts) => {
+module.exports = (atts = {}) => {
   return new Promise((resolve, reject) => {
     if (!atts.uuid) {
       const params = {

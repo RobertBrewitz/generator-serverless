@@ -14,6 +14,4 @@ resources:
   - '${file(config/resources/cognito-user-pools-authorizer.yml)}'
   - '${file(config/resources/cognito-identity-pool.yml)}'
   - '${file(config/resources/dynamodb-iam-policy.yml)}'
-  - '${file(config/resources/defaults-table.yml)}'
 functions:
-  - '${file(config/functions/defaults-function.yml)}'

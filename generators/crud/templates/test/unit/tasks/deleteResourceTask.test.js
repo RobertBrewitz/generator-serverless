@@ -16,7 +16,7 @@ const createTask = ({ del }) => {
   });
 };
 
-describe('test/unit/tasks/delete<%= Plural %>Task.test.js', () => {
+describe('test/unit/tasks/delete<%= Singular %>Task.test.js', () => {
   it('strict on uuid to being supplied and does not call delete', async () => {
     const del = sinon.stub().yields(null, {});
     const delete<%= Singular %>Task = createTask({ del });

@@ -1,13 +1,13 @@
 const {
-  responseDefault,
+  responseBad,
   responseSuccess,
   responseError,
 } = require('./../../../src/helpers/responseHelpers');
 
 describe('test/unit/helpers/responseHelpers.test.js', () => {
-  describe('responseDefault', () => {
+  describe('responseBad', () => {
     it('statusCode is 405 Method Not Allowed', () => {
-      const res = responseDefault();
+      const res = responseBad();
 
       expect(res.statusCode).to.eq(405);
     });
@@ -15,7 +15,7 @@ describe('test/unit/helpers/responseHelpers.test.js', () => {
     it('headers include Access Control Allow Origin with value *', () => {
       const header = 'Access-Control-Allow-Origin';
 
-      const res = responseDefault();
+      const res = responseBad();
 
       expect(res.headers[header]).to.eq('*');
     });
@@ -23,7 +23,7 @@ describe('test/unit/helpers/responseHelpers.test.js', () => {
     it('headers include Access Control Allow Credentials with value true', () => {
       const header = 'Access-Control-Allow-Credentials';
 
-      const res = responseDefault();
+      const res = responseBad();
 
       expect(res.headers[header]).to.eq(true);
     });
@@ -42,6 +42,19 @@ describe('test/unit/helpers/responseHelpers.test.js', () => {
       const res = responseSuccess(data);
 
       expect(res.statusCode).to.eq(200);
+    });
+
+    it('falls back on the original response if res.body nor res.data is not present', () => {
+      const res = { foo: 'bar' };
+      const success = responseSuccess(res);
+
+      expect(success.body).to.eq('{"foo":"bar"}');
+    });
+
+    it('handles an undefined response', () => {
+      const success = responseSuccess();
+
+      expect(success.body).to.eq('{}');
     });
 
     it('headers include Access Control Allow Origin with value *', () => {

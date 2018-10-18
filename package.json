@@ -1,7 +1,7 @@
 {
   "name": "@rpoc/generator-serverless",
   "author": "Robert Brewitz Borg <hello@robertbrewitz.com>",
-  "version": "2.0.1",
+  "version": "3.0.0",
   "description": "Yeoman generators for the serverless framework for creating rapid proof-of-concepts",
   "license": "MIT",
   "homepage": "https://github.com/rpoc/generator-serverless#readme",
@@ -32,5 +32,17 @@
   "dependencies": {
     "js-yaml": "^3.12.0",
     "yeoman-generator": "^3.1.1"
+  },
+  "scripts": {
+    "test": "nyc mocha --recursive",
+    "test:functional": "nyc mocha test/functional",
+    "test:integration": "nyc mocha test/integration",
+    "test:unit": "nyc mocha test/unit"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^5.2.0",
+    "nyc": "^13.0.1",
+    "sinon": "^6.3.5"
   }
 }
