@@ -14,7 +14,6 @@ module.exports = (atts = {}) => {
     }
 
     const {
-      Name,
       uuid,
     } = atts;
 
@@ -24,8 +23,8 @@ module.exports = (atts = {}) => {
         uuid
       },
       AttributeUpdates: {
-        Name: {
-          Value: Name,
+        json: {
+          Value: typeof atts === 'string' ? atts : JSON.stringify(atts),
           Action: 'PUT'
         },
       },

@@ -24,11 +24,9 @@ describe('test/unit/tasks/upsert<%= Singular %>Task.test.js', () => {
     const update = sinon.stub().yields(null, {});
     const upsert<%= Singular %>Task = createTask({ update, uuidV4: () => '1' });
 
-    const event = {
-      Name: 'Name',
-    };
+    const atts = {};
 
-    await upsert<%= Singular %>Task(event);
+    await upsert<%= Singular %>Task(atts);
 
     expect(update.lastCall.args[0].Key.uuid).to.eq('1');
   });
@@ -37,12 +35,11 @@ describe('test/unit/tasks/upsert<%= Singular %>Task.test.js', () => {
     const update = sinon.stub().yields(null, {});
     const upsert<%= Singular %>Task = createTask({ update });
 
-    const event = {
-      Name: 'Name',
+    const atts = {
       uuid: 'uuid',
     };
 
-    await upsert<%= Singular %>Task(event);
+    await upsert<%= Singular %>Task(atts);
 
     expect(update.lastCall.args[0].TableName).to.eq(`${APP}-${STAGE}-<%= plural %>`);
   });
@@ -51,28 +48,38 @@ describe('test/unit/tasks/upsert<%= Singular %>Task.test.js', () => {
     const update = sinon.stub().yields(null, {});
     const upsert<%= Singular %>Task = createTask({ update });
 
-    const event = {
-      Name: 'Name',
+    const atts = {
       uuid: 'uuid',
     };
 
-    await upsert<%= Singular %>Task(event);
+    await upsert<%= Singular %>Task(atts);
 
-    expect(update.lastCall.args[0].Key.uuid).to.eq(event.uuid);
+    expect(update.lastCall.args[0].Key.uuid).to.eq(atts.uuid);
   });
 
-  it('uses Name as value for updating Name', async () => {
+  it('JSON stringifies atts for the json field', async () => {
     const update = sinon.stub().yields(null, {});
     const upsert<%= Singular %>Task = createTask({ update });
 
-    const event = {
-      Name: 'Name',
+    const atts = {
       uuid: 'uuid',
+      foo:'bar',
     };
 
-    await upsert<%= Singular %>Task(event);
+    await upsert<%= Singular %>Task(atts);
 
-    expect(update.lastCall.args[0].AttributeUpdates.Name.Value).to.eq(event.Name);
+    expect(update.lastCall.args[0].AttributeUpdates.json.Value).to.eq('{"uuid":"uuid","foo":"bar"}');
+  });
+
+  it('if input is already a string, do not JSON stringify input', async () => {
+    const update = sinon.stub().yields(null, {});
+    const upsert<%= Singular %>Task = createTask({ update });
+
+    const atts = '{"uuid":"uuid","foo":"bar"}';
+
+    await upsert<%= Singular %>Task(atts);
+
+    expect(update.lastCall.args[0].AttributeUpdates.json.Value).to.eq('{"uuid":"uuid","foo":"bar"}');
   });
 });
 

@@ -11,7 +11,7 @@
   memorySize: 128
   events:
     - http:
-        path: <%= plural %>
+        path: <%= pluralFilename %>
         method: any
         authorizer:
           type: COGNITO_USER_POOLS

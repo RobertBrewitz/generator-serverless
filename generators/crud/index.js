@@ -77,6 +77,7 @@ module.exports = class extends Generator {
           Singular,
           plural,
           singular,
+          pluralFilename,
         }
       );
     });
@@ -101,7 +102,7 @@ module.exports = class extends Generator {
         line += `  ${singular}Function: create${Singular}Function({${EOL}`;
         line += `    delete${Singular}Task,${EOL}`;
         line += `    get${Singular}Task,${EOL}`;
-        line += `    responseDefault,${EOL}`;
+        line += `    responseBad,${EOL}`;
         line += `    responseError,${EOL}`;
         line += `    responseSuccess,${EOL}`;
         line += `    upsert${Singular}Task,${EOL}`;
